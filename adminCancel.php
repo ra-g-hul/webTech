@@ -56,7 +56,7 @@ if(!isset($email)){
 			<?php
 				date_default_timezone_set('America/Chicago'); // change this?
 				$today = date("Y-m-d H:i:s"); 
-				$query = mysqli_query($mysqli, "select re.id, ro.roomNumber, re.fromTime, re.toTime from reservations re, rooms ro where re.fromTime > '$today' and re.cancelled = 0 and re.roomId = ro.id and re.userId = '$userId';");
+				$query = mysqli_query($mysqli, "select re.id, ro.roomNumber, re.fromTime, re.toTime from reservations re, rooms ro where re.fromTime > '$today' and re.cancelled = 0 and re.roomId = ro.id;");
 				while($row = mysqli_fetch_assoc($query)) {
 					echo "<tr><td><input type = 'checkbox' value = " . $row["id"] . "></td><td>" . $row["roomNumber"] . "</td><td>" . $row["fromTime"] . "</td><td>" . $row["toTime"] . "</td></tr>";
 				}

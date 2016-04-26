@@ -21,12 +21,14 @@ if (isset($_POST['submit'])) {
 			$salt = sprintf("$2a$%02d$", $cost) . $salt;
 			$hash = crypt($pwd, $salt);
 			
-			$query = "insert into users (`email`, `password`, `name`) values ('$email','$hash','$name')";
+			$query = "insert into users (`email`, `password`, `name`) values ('$email','$hash','$name');";
 			if (mysqli_query($mysqli, $query)) {
 				$_SESSION['email'] = $email;
 				header("location: welcome.php");
 			} else {
+				die(mysqli_error($mysqli));
 				$_SESSION['Error'] = "Error: " . mysqli_error($mysqli);
+				header("location: login.html");
 			}
 		} else {
 			$_SESSION['Error'] = "Error: Email already exists.";

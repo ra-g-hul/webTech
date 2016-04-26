@@ -8,6 +8,7 @@ $query = mysqli_query($mysqli, "select * from users where email='$email'");
 $row = mysqli_fetch_assoc($query);
 $name = $row['name'];
 $email = $row['email'];
+$group = $row['group'];
 if(!isset($email)){
 	mysqli_close($mysqli);
 	header('Location: login.html'); 
@@ -89,8 +90,10 @@ if(!isset($email)){
 								filled.push(["12:00am", moment(start).format('h:mma')]);
 							}
 						}
+						filled.push(["12:00am", moment().format('h:mma')]); // cannot pick start time earlier than now
 						$("#timepair .start").prop('disabled', false);
-						$('#timepair .start').replaceWith("<input type='text' class='time start' />"); // replace the old field with a new one
+						//$('#timepair .start').replaceWith("<input type='text' class='time start' />"); // replace the old field with a new one
+						$('#timepair .start').timepicker('remove');
 						$('#timepair .start').timepicker({
 							'showDuration': true,
 							'timeFormat': 'g:ia',
@@ -103,7 +106,7 @@ if(!isset($email)){
 					}
 				});
 			});
-			
+
 			$("#timepair .start").change(function() {
 				var today = new Date();
 				var fromTime = $("#timepair .start").timepicker("getTime", today); // relative to today
@@ -227,6 +230,16 @@ if(!isset($email)){
 	</form>
 	<a href = "cancelReservation.php">Cancel a reservation</a>
 	<a href = "history.php">See all reservations</a>
-
+	<a href="logout.php">Logout</a></br>
+	<span id = "admin">
+		<?php
+			if($group == 3) {
+				echo "<a href='adminPast.php'>View past reservations</a>";
+				echo "<a href='adminFuture.php'>View future reservations</a>";
+				echo "<a href='adminCancel.php'>Cancel a reservations</a>";
+				echo "<a href='manageRooms.php'>Manage rooms</a>";
+			}
+		?>
+	<span>
 </body>
 </html>
