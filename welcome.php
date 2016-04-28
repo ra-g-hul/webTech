@@ -8,7 +8,6 @@ $query = mysqli_query($mysqli, "select * from users where email='$email'");
 $row = mysqli_fetch_assoc($query);
 $name = $row['name'];
 $email = $row['email'];
-$group = $row['group'];
 if(!isset($email)){
 	mysqli_close($mysqli);
 	header('Location: login.html'); 
@@ -18,6 +17,12 @@ if(!isset($email)){
 <html>
 <head>
 	<title>Welcome page</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" media="screen" href="css/reset.css">
+	<link rel="stylesheet" type="text/css" media="screen" href="css/style.css">
+	<script src="js/jquery-1.7.min.js"></script>
+	<script src="js/jquery.easing.1.3.js"></script>
+	<script src="js/FF-cash.js"></script>
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>	
 	
 	<script type="text/javascript" src="js/bootstrap-datepicker.js"></script>
@@ -90,10 +95,8 @@ if(!isset($email)){
 								filled.push(["12:00am", moment(start).format('h:mma')]);
 							}
 						}
-						filled.push(["12:00am", moment().format('h:mma')]); // cannot pick start time earlier than now
 						$("#timepair .start").prop('disabled', false);
-						//$('#timepair .start').replaceWith("<input type='text' class='time start' />"); // replace the old field with a new one
-						$('#timepair .start').timepicker('remove');
+						$('#timepair .start').replaceWith("<input type='text' class='time start' />"); // replace the old field with a new one
 						$('#timepair .start').timepicker({
 							'showDuration': true,
 							'timeFormat': 'g:ia',
@@ -106,7 +109,7 @@ if(!isset($email)){
 					}
 				});
 			});
-
+			
 			$("#timepair .start").change(function() {
 				var today = new Date();
 				var fromTime = $("#timepair .start").timepicker("getTime", today); // relative to today
@@ -203,43 +206,54 @@ if(!isset($email)){
 	</script>
 </head>
 <body>
-	Welcome, <?php echo $name; ?>!</br>
-	Reserve a room
-	<form id = "mainForm">
-		Filter by type
-		<select id = 'type'>
-			<option value = 'All' selected='selected'>All</option>
-			<?php
-				$query = mysqli_query($mysqli, "select type from roomtype");
-				while($row = mysqli_fetch_assoc($query)) {
-					echo "<option value = ".$row['type'].">".$row['type']."</option>"; 
-				}
-				echo "";
-			?>
-		</select><br/>
-		Room number
-		<select id = 'roomNumber' class = "updateTime">
-		</select><br/>
-		Date <input type="text" id="date" class = "updateTime"><br/>
-		<p id="timepair">
-			From
-			<input type="text" class="time start" /> to
-			<input type="text" class="time end" />
-		</p>
-		<input type="submit" name = "submit" value = "Submit">
-	</form>
-	<a href = "cancelReservation.php">Cancel a reservation</a>
-	<a href = "history.php">See all reservations</a>
-	<a href="logout.php">Logout</a></br>
-	<span id = "admin">
-		<?php
-			if($group == 3) {
-				echo "<a href='adminPast.php'>View past reservations</a>";
-				echo "<a href='adminFuture.php'>View future reservations</a>";
-				echo "<a href='adminCancel.php'>Cancel a reservations</a>";
-				echo "<a href='manageRooms.php'>Manage rooms</a>";
-			}
-		?>
-	<span>
+
+<header>
+  <div class="main">
+    <div class="wrap">
+      <h1><a href="index.html"><img src="images/rt.jpg" alt="" height="75" width="200"></a></h1>
+      <div class="slogan">Clients choose us!</div>
+      <div class="tooltips"> <a href="#"><img src="images/icon-1.png" alt=""></a><a href="#"><img src="images/icon-2.png" alt=""></a><a href="#"><img src="images/icon-3.png" alt=""></a>Welcome, <?php echo $name; ?>! </div>
+	</div>
+    
+	<div class="nav-shadow">
+      <div>
+        <nav>
+          <ul class="menu">
+            <li><a href="reserve1.php">Reserve Room</a></li>
+            <li><a href="cancelReservation.php">Cancel Reservation</a></li>
+            <li><a href="history.php">View Reservations</a></li>
+			<li><a href="#">Logout</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+	
+  </div>
+  
+  <div class="header-content">
+    <div class="wrap main">
+      <div class="block-1"> <img src="images/meetingroom.png" alt="" class="img-radius">
+        <div class="border-1">
+          <p class="color-1 p2">Reserve a room</p>
+          <p>Want to book a room? Book it here before someone else do!</p>
+          <a href="reserve.html" class="button top-1">Click here</a> </div>
+      </div>
+      <div class="block-1"> <img src="images/Cancel-Button.jpg" alt="" class="img-radius">
+        <div class="border-1">
+          <p class="color-1 p2">Cancel Reservation</p>
+          <p>Cannot make it? Want to cancel a reservation? Cancel your reservation here!</p>
+          <a href="cancelReservation.php" class="button top-1">Click here</a> </div>
+      </div>
+      <div class="block-1"> <img src="images/Binoculars.jpg" alt="" class="img-radius">
+        <div>
+          <p class="color-1 p2">View all Reservations</p>
+          <p>Want to check your reservation? Watch all your reservations here!</p>
+          <a href="history.php" class="button top-1">Click here</a> </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+
 </body>
 </html>
